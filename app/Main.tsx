@@ -12,8 +12,10 @@ import {
 import { useDispatch } from "react-redux";
 import React from "react";
 import { AppDispatch } from "./redux/store";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { createTask } from "./redux/slices/taskSlice";
+import { TSubmitData } from "./types";
+import toast from "react-hot-toast";
 
 const defaultToken = "317ad1fc-e0a9-11ef-a978-0242ac120007";
 
@@ -26,9 +28,9 @@ function Main() {
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: TSubmitData) => {
     const { tags, ...otherData } = data;
-    dispatch(
+    const isCreated = await dispatch(
       createTask({
         tags: tags.split(","),
         private_content: null,
@@ -37,6 +39,15 @@ function Main() {
         ...otherData,
       })
     );
+    if (!isCreated.payload) {
+      toast.error("Задача не создана, возникла ошибка. Попробуйте ещё раз");
+    } else {
+      if (isCreated.payload.ok) {
+        toast.success("Задача создана");
+      } else {
+        toast.error("Задача не создана, возникла ошибка. Попробуйте ещё раз");
+      }
+    }
   };
   return (
     <div className="flex items-center justify-center flex-col gap-y-4 min-h-screen bg-gray-100 pt-1 pb-1- font-[Inter]">

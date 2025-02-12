@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Provider store={store}>
       <Main />
-      <Toaster />
+      <Toaster position="top-right" reverseOrder={true} />
     </Provider>
   );
 }

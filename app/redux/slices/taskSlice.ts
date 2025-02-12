@@ -1,9 +1,10 @@
+import { TTask } from "@/app/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const createTask = createAsyncThunk(
   "status/createTask",
-  async (params) => {
+  async (params: TTask) => {
     const { data } = await axios.get(
       `https://deadlinetaskbot.productlove.ru/api/v1/tasks/client/newhardtask?token=${
         params.token
