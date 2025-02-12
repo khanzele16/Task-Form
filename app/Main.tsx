@@ -12,7 +12,7 @@ import {
 import { useDispatch } from "react-redux";
 import React from "react";
 import { AppDispatch } from "./redux/store";
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { createTask } from "./redux/slices/taskSlice";
 import { TSubmitData } from "./types";
 import toast from "react-hot-toast";
@@ -26,9 +26,9 @@ function Main() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<TSubmitData>();
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit: SubmitHandler<FieldValues> = async (data: TSubmitData) => {
+  const onSubmit: SubmitHandler<TSubmitData> = async (data) => {
     const { tags, ...otherData } = data;
     const isCreated = await dispatch(
       createTask({
